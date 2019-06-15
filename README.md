@@ -56,6 +56,91 @@ sudo chkconfig --list tomcat8
 sudo chkconfig tomcat8 on
 ```
 
+## Copy JDBC driver to /usr/local/java//jre/lib/ext/ or /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/lib/ext
+cp -a ojdbc6.jar /usr/local/java//jre/lib/ext/
+cp -a ojdbc6.jar /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/lib/ext
+service tomcat8 restart
+
+## Create dbCon.jsp and dbconnection.jsp on /var/lib/tomcat8/webapps/ROOT
+#dbCon.jsp
+<%@ page language="java" import="java.sql.*" %>
+<%
+String DB_URL = "jdbc:oracle:thin:@awsdc-rds-prd-sales01.cf89zyffo8dr.ap-northeast-2.rds.amazonaws.com:1521:SALES01";
+String DB_USER = "scott";
+String DB_PASSWORD = "password";
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+String sql=null;
+try
+ {
+ Class.forName("oracle.jdbc.driver.OracleDriver");
+ con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+ out.println("Oracle Database Connected!");
+ }catch(SQLException e){out.println(e);}
+%>
+
+<%@ page language="java" import="java.sql.*" %>
+<%
+String DB_URL = "jdbc:oracle:thin:@awsdc-rds-prd-sales01.cf89zyffo8dr.ap-northeast-2.rds.amazonaws.com:1521:SALES01";
+String DB_USER = "scott";
+String DB_PASSWORD = "external#1234";
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+String sql=null;
+try
+ {
+ Class.forName("oracle.jdbc.driver.OracleDriver");
+ con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+ out.println("Oracle Database Connected!");
+ }catch(SQLException e){out.println(e);}
+%>
+root@ip-10-10-1-226:/var/lib/tomcat8/webapps/ROOT# cat dbconnection.jsp 
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ include file="dbCon.jsp" %> <!-- dbCon.jsp import -->
+<%@ page import="java.util.*,java.text.*"%>
+<html>
+<head>
+<title>test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link title=menustyle href="../adminstyle.css" type="text/css" rel="stylesheet">
+<script language="JavaScript">
+<!--
+ function MM_openBrWindow(theURL,winName,features){
+ window.open(theURL,winName,features);
+ }
+//-->
+</script>
+</head>
+ 
+ 
+body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<table width="630" border="0" cellspacing="0" cellpadding="0">
+ <%
+ sql="select ENAME, JOB, MGR, HIREDATE from emp";
+ 
+  stmt = con.createStatement();
+  rs = stmt.executeQuery(sql);
+ 
+  while(rs.next()) {
+          String name=rs.getString("ENAME");
+          String job=rs.getString("JOB");
+          String mgr=rs.getString("MGR");
+          String hiredate=rs.getString("HIREDATE");
+          out.println(" ENAME : "+name+" JOB : "+job+" MRG :"+mgr+" DATE :"+hiredate+" <hr>");
+ }
+ 
+    if(rs != null) rs.close();
+    if(stmt != null)stmt.close();
+    if(con != null)con.close();
+ %>
+ 
+</body>
+</html>
+
+
+
 ## Install Nginx
 ```
 yum install nginx
