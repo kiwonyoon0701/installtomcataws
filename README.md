@@ -57,12 +57,15 @@ sudo chkconfig tomcat8 on
 ```
 
 ## Copy JDBC driver to /usr/local/java//jre/lib/ext/ or /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/lib/ext
+```
 cp -a ojdbc6.jar /usr/local/java//jre/lib/ext/
 cp -a ojdbc6.jar /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/lib/ext
 service tomcat8 restart
+```
 
 ## Create dbCon.jsp and dbconnection.jsp on /var/lib/tomcat8/webapps/ROOT
 # dbCon.jsp
+```
 <%@ page language="java" import="java.sql.*" %>
 <%
 String DB_URL = "jdbc:oracle:thin:@awsdc-rds-prd-sales01.cf89zyffo8dr.ap-northeast-2.rds.amazonaws.com:1521:SALES01";
@@ -79,8 +82,10 @@ try
  out.println("Oracle Database Connected!");
  }catch(SQLException e){out.println(e);}
 %>
+```
 
 # dbconnection.jsp
+```
 <%@ page language="java" import="java.sql.*" %>
 <%
 String DB_URL = "jdbc:oracle:thin:@awsdc-rds-prd-sales01.cf89zyffo8dr.ap-northeast-2.rds.amazonaws.com:1521:SALES01";
@@ -139,6 +144,7 @@ body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0" marginwidth="
  
 </body>
 </html>
+```
 
 
 
