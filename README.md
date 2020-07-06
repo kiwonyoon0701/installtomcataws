@@ -88,9 +88,9 @@ try
 ```
 <%@ page language="java" import="java.sql.*" %>
 <%
-String DB_URL = "jdbc:oracle:thin:@awsdc-rds-prd-sales01.cf89zyffo8dr.ap-northeast-2.rds.amazonaws.com:1521:SALES01";
+String DB_URL = "jdbc:oracle:thin:@awsdc-rds-prd-sales01.cf89XXXXXXXX.ap-northeast-2.rds.amazonaws.com:1521:SALES01";
 String DB_USER = "scott";
-String DB_PASSWORD = "external#1234";
+String DB_PASSWORD = "<PASSWORD>";
 Connection con = null;
 Statement stmt = null;
 ResultSet rs = null;
