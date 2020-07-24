@@ -1,0 +1,4 @@
+mysql driver
+
+root@ip-10-100-1-241:/usr/share/tomcat8/lib# cp /usr/share/java/mysql-connector-java.jar .
+root@ip-10-100-1-241:/usr/share/tomcat8/lib# service tomcat8 restart
